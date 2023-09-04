@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/abhinabadutta2019/backendDevelopmentApplications-assignment-abhinaba/issues"
   },
-  "homepage": "https://github.com/abhinabadutta2019/backendDevelopmentApplications-assignment-abhinaba#readme"
+  "homepage": "https://github.com/abhinabadutta2019/backendDevelopmentApplications-assignment-abhinaba#readme",
+  "dependencies": {
+    "typescript": "^5.2.2"
+  }
 }

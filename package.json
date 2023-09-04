@@ -1,0 +1,20 @@
+{
+  "name": "backenddevelopmentapplications-assignment-abhinaba",
+  "version": "1.0.0",
+  "description": "Assignment: Simple Backend API Development with TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abhinabadutta2019/backendDevelopmentApplications-assignment-abhinaba.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abhinabadutta2019/backendDevelopmentApplications-assignment-abhinaba/issues"
+  },
+  "homepage": "https://github.com/abhinabadutta2019/backendDevelopmentApplications-assignment-abhinaba#readme"
+}

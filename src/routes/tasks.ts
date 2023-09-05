@@ -47,5 +47,62 @@ router.delete("/deleteOne/:id", async (req, res) => {
   }
 });
 //
+router.put("/updateOne/:id", async (req, res) => {
+  try {
+    let messageArray = [];
+    //
+    const oneTask = await Task.findOne({ _id: req.params.id });
+    //
+    console.log(oneTask, "oneTask");
+
+    //
+    if (!oneTask) {
+      return res.json({ message: "task not found in database" });
+    }
+
+    // console.log(req.body, "req.body");
+
+    //
+
+    //
+
+    if (req.body.title) {
+      const updateTitle = await Task.findByIdAndUpdate(
+        req.params.id,
+        {
+          $set: { title: req.body.title },
+        },
+        { returnOriginal: false }
+      );
+      //
+      messageArray.push("title updated");
+    }
+
+    //
+    if (req.body.description) {
+      //
+      const updateDescription = await Task.findByIdAndUpdate(
+        req.params.id,
+        {
+          $set: { description: req.body.description },
+        },
+        { returnOriginal: false }
+      );
+      //
+      messageArray.push("description updated");
+    }
+
+    //
+    if (messageArray.length < 1) {
+      return res.json({ message: "no data passed to update" });
+    }
+    //
+    res.json({ messageArray: messageArray });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Unable to get tasks from database" });
+  }
+});
+//
 
 export default router;

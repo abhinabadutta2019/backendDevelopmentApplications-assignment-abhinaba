@@ -5,10 +5,14 @@ import dotenv from "dotenv";
 
 const app = express();
 app.use(express.json()); // Middleware to parse JSON requests
-app.use("/api/tasks", tasksRouter);
+
+//
+app.use("/tasks", tasksRouter);
+
+//
 dotenv.config();
 
-console.log("Hi1");
+console.log("Hi3");
 
 //
 let uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.te788iv.mongodb.net/typeScript-toDoApp?retryWrites=true&w=majority`;

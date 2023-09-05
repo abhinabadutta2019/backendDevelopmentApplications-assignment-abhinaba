@@ -1,4 +1,5 @@
 import express from "express";
+import { ITask } from "../interfaces/Task";
 const Task = require("../models/Task");
 
 const router = express.Router();
@@ -6,6 +7,14 @@ const router = express.Router();
 // Route to create a new task
 router.post("/create", async (req, res) => {
   try {
+    //
+    const task = req.body as ITask;
+
+    // checking
+
+    // task.age = 5;
+    // task.title = 5;
+    //
     const newTask = await Task.create(req.body);
     //
     console.log(newTask, "newTask");

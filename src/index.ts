@@ -8,6 +8,8 @@ app.use(express.json()); // Middleware to parse JSON requests
 app.use("/api/tasks", tasksRouter);
 dotenv.config();
 
+console.log("Hi1");
+
 //
 let uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.te788iv.mongodb.net/typeScript-toDoApp?retryWrites=true&w=majority`;
 //

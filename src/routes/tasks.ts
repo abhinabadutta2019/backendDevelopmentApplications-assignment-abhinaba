@@ -24,8 +24,28 @@ router.get("/getAll", async (req, res) => {
     res.json(tasks);
   } catch (error) {
     console.error("Error retrieving tasks:", error);
-    res.status(500).json({ error: "Unable to retrieve tasks" });
+    res.status(500).json({ error: "Unable to get tasks from database" });
   }
 });
+//
+router.delete("/deleteOne/:id", async (req, res) => {
+  try {
+    const oneTask = await Task.findOne({ _id: req.params.id });
+    //
+    if (!oneTask) {
+      return res.json({ message: "task not found in database" });
+    }
+    //
+
+    const deleteTask = await Task.findOneAndDelete({ _id: req.params.id });
+
+    //
+    res.json({ deleteTask: deleteTask, message: "task deleted" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Unable to get tasks from database" });
+  }
+});
+//
 
 export default router;

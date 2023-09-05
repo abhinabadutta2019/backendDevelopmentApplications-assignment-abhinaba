@@ -12,8 +12,8 @@ router.post("/create", async (req, res) => {
 
     res.status(201).json(newTask);
   } catch (error) {
-    console.error("Error creating task:", error);
-    res.status(500).json({ error: "Unable to create task" });
+    console.error(error);
+    res.json({ error: "Unable to create task" });
   }
 });
 
@@ -23,8 +23,8 @@ router.get("/getAll", async (req, res) => {
     const tasks = await Task.find();
     res.json(tasks);
   } catch (error) {
-    console.error("Error retrieving tasks:", error);
-    res.status(500).json({ error: "Unable to get tasks from database" });
+    console.error(error);
+    res.json({ error: "Unable to get tasks" });
   }
 });
 //

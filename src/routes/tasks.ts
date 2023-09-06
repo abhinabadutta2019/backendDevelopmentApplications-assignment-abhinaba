@@ -2,7 +2,8 @@ import express, { Request, Response } from "express";
 // import { ITask } from "../interfaces/Task";
 const Task = require("../models/Task");
 const router = express.Router();
-//
+
+//////////ZOD setup starts////////////////////////////////////////
 import { z } from "zod";
 const { ZodError } = require("zod");
 /////////////
@@ -12,7 +13,7 @@ const { ZodError } = require("zod");
 const TaskSchema = z.object({
   title: z.string().min(5),
   description: z.string(),
-  completed: z.boolean().optional(),
+  completed: z.boolean().default(false),
 });
 ////////////////////
 type OneTask = z.infer<typeof TaskSchema>;
@@ -28,41 +29,39 @@ try {
     console.log(err.issues[0].message);
   }
 }
-//
-// console.log(TaskSchema.parse(oneTask));
-// ?? how to get zod error, and-- destructure that
+//////////ZOD setup ends////////////////////////////////////////
+
 ///////////////////////////////////////////////////////////////////////
+////////----------ROUTES--------------------------///////////////////////
+///////////////////////////////////////////////
 // Route to create a new task
 router.post("/create", async (req: Request, res: Response) => {
   try {
     //
-    // const task = req.body as ITask;
-    // const task: ITask = req.body;
-
-    // checking
-
-    // task.age = 5;
-    // task.title = 5;
     //
     const title = req.body.title;
     const description = req.body.description;
     //
-    // Check if title and description are present and valid before creating the task
-    // if (typeof title !== "string" || typeof description !== "string") {
-    //   return res.status(400).json({ error: "Invalid title or description" });
-    // }
-    //
-    const newTask = await Task.create({
+    // type OneTask = z.infer<typeof TaskSchema>;
+    // Validate the request body using Zod schema
+    const validatedData = TaskSchema.parse({
       title: title,
       description: description,
     });
+
+    //
+    const newTask = await Task.create(validatedData);
     //
     console.log(newTask, "newTask");
 
     res.status(201).json(newTask);
-  } catch (error) {
-    console.error(error);
-    res.json({ error: "Unable to create task" });
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      console.log(err.issues[0].message, "error message from catch block");
+      return res.json({ message: err.issues[0].message });
+    }
+    console.log(err);
+    res.json({ error: "Unable to create tasks" });
   }
 });
 

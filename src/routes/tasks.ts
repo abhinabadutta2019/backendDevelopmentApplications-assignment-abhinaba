@@ -4,22 +4,33 @@ const Task = require("../models/Task");
 const router = express.Router();
 //
 import { z } from "zod";
+const { ZodError } = require("zod");
 /////////////
 
 // in zod everything is -- required by default-- if something is optional, you have to -- mention, that is optional
 
 const TaskSchema = z.object({
-  title: z.string(),
+  title: z.string().min(5),
   description: z.string(),
   completed: z.boolean().optional(),
 });
 ////////////////////
 type OneTask = z.infer<typeof TaskSchema>;
 //
-const oneTask = { title: "wake me up", description: "play " };
+const oneTask = { title: "a", description: "play " };
 //testing with zod schema
-console.log(TaskSchema.parse(oneTask));
-
+// console.log(TaskSchema.parse(oneTask), "response from zod");
+//
+try {
+  console.log(TaskSchema.parse(oneTask), "response from zod");
+} catch (err) {
+  if (err instanceof z.ZodError) {
+    console.log(err.issues[0].message);
+  }
+}
+//
+// console.log(TaskSchema.parse(oneTask));
+// ?? how to get zod error, and-- destructure that
 ///////////////////////////////////////////////////////////////////////
 // Route to create a new task
 router.post("/create", async (req: Request, res: Response) => {

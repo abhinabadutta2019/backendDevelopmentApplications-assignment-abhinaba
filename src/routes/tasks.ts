@@ -1,15 +1,24 @@
 import express, { Request, Response } from "express";
-import { ITask } from "../interfaces/Task";
+// import { ITask } from "../interfaces/Task";
 const Task = require("../models/Task");
-
 const router = express.Router();
+//
+import { z } from "zod";
+//
+const taskSchema = z.object({
+  title: z.string(),
+});
+//
+const oneTask = { title: "wake me up" };
+//testing with zod schema
+console.log(taskSchema.parse(oneTask));
 
 // Route to create a new task
 router.post("/create", async (req: Request, res: Response) => {
   try {
     //
     // const task = req.body as ITask;
-    const task: ITask = req.body;
+    // const task: ITask = req.body;
 
     // checking
 
@@ -20,9 +29,9 @@ router.post("/create", async (req: Request, res: Response) => {
     const description = req.body.description;
     //
     // Check if title and description are present and valid before creating the task
-    if (typeof title !== "string" || typeof description !== "string") {
-      return res.status(400).json({ error: "Invalid title or description" });
-    }
+    // if (typeof title !== "string" || typeof description !== "string") {
+    //   return res.status(400).json({ error: "Invalid title or description" });
+    // }
     //
     const newTask = await Task.create({
       title: title,
@@ -72,7 +81,7 @@ router.put("/updateOne/:id", async (req: Request, res: Response) => {
   try {
     //
     // const task = req.body as ITask;
-    const task: ITask = req.body;
+    // const task: ITask = req.body;
     /////////////////////////////////////
     let messageArray = [];
     //

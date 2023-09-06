@@ -4,15 +4,23 @@ const Task = require("../models/Task");
 const router = express.Router();
 //
 import { z } from "zod";
-//
-const taskSchema = z.object({
-  title: z.string(),
-});
-//
-const oneTask = { title: "wake me up" };
-//testing with zod schema
-console.log(taskSchema.parse(oneTask));
+/////////////
 
+// in zod everything is -- required by default-- if something is optional, you have to -- mention, that is optional
+
+const TaskSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  completed: z.boolean().optional(),
+});
+////////////////////
+type OneTask = z.infer<typeof TaskSchema>;
+//
+const oneTask = { title: "wake me up", description: "play " };
+//testing with zod schema
+console.log(TaskSchema.parse(oneTask));
+
+///////////////////////////////////////////////////////////////////////
 // Route to create a new task
 router.post("/create", async (req: Request, res: Response) => {
   try {

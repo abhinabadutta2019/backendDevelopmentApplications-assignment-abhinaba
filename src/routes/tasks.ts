@@ -1,21 +1,33 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import { ITask } from "../interfaces/Task";
 const Task = require("../models/Task");
 
 const router = express.Router();
 
 // Route to create a new task
-router.post("/create", async (req, res) => {
+router.post("/create", async (req: Request, res: Response) => {
   try {
     //
-    const task = req.body as ITask;
+    // const task = req.body as ITask;
+    const task: ITask = req.body;
 
     // checking
 
     // task.age = 5;
     // task.title = 5;
     //
-    const newTask = await Task.create(req.body);
+    const title = req.body.title;
+    const description = req.body.description;
+    //
+    // Check if title and description are present and valid before creating the task
+    if (typeof title !== "string" || typeof description !== "string") {
+      return res.status(400).json({ error: "Invalid title or description" });
+    }
+    //
+    const newTask = await Task.create({
+      title: title,
+      description: description,
+    });
     //
     console.log(newTask, "newTask");
 

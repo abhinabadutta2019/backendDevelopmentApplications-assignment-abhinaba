@@ -68,9 +68,17 @@ router.delete("/deleteOne/:id", async (req, res) => {
   }
 });
 //
-router.put("/updateOne/:id", async (req, res) => {
+router.put("/updateOne/:id", async (req: Request, res: Response) => {
   try {
+    //
+    // const task = req.body as ITask;
+    const task: ITask = req.body;
+    /////////////////////////////////////
     let messageArray = [];
+    //
+    const title = req.body.title;
+    const description = req.body.description;
+    //
     //
     const oneTask = await Task.findOne({ _id: req.params.id });
     //
@@ -83,15 +91,16 @@ router.put("/updateOne/:id", async (req, res) => {
 
     // console.log(req.body, "req.body");
 
-    //
-
-    //
-
-    if (req.body.title) {
+    if (title) {
+      //
+      if (typeof title !== "string") {
+        return res.status(400).json({ error: "Invalid title " });
+      }
+      //
       const updateTitle = await Task.findByIdAndUpdate(
         req.params.id,
         {
-          $set: { title: req.body.title },
+          $set: { title: title },
         },
         { returnOriginal: false }
       );
@@ -100,12 +109,16 @@ router.put("/updateOne/:id", async (req, res) => {
     }
 
     //
-    if (req.body.description) {
+    if (description) {
+      //
+      if (typeof description !== "string") {
+        return res.status(400).json({ error: "Invalid description " });
+      }
       //
       const updateDescription = await Task.findByIdAndUpdate(
         req.params.id,
         {
-          $set: { description: req.body.description },
+          $set: { description: description },
         },
         { returnOriginal: false }
       );
@@ -118,7 +131,9 @@ router.put("/updateOne/:id", async (req, res) => {
       return res.json({ message: "no data passed to update" });
     }
     //
-    res.json({ messageArray: messageArray });
+    const updatedTask = await Task.findOne({ _id: req.params.id });
+    //
+    res.json({ messageArray: messageArray, updatedTask: updatedTask });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Unable to get tasks from database" });
